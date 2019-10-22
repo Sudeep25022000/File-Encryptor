@@ -1,17 +1,29 @@
-/* C++ Program - Encrypt File */		
+/* C++ Program - Encrypt File  and decrupt a file */		
 #include<iostream.h>
 #include<conio.h>
 #include<fstream.h>
 #include<stdio.h>
-#include<stdlib.h>
+#include<string.h>
+using namespace std;
+string encryptDecrypt(string toEncrypt) {
+	    char key[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'}; 
 
+    string output = toEncrypt;
+    
+    for (int i = 0; i < toEncrypt.size(); i++)
+        output[i] = toEncrypt[i] ^ key[i];
+    
+    return output;
+}
 int main()
 {
-	char fname[20], ch ,choice,s[80],t[10];
-	fstream fps,fpt;
+	char fname[20], ch,s[80],en[80];
+	string t;
+	fstream fps,fpt,fp,fpp;
 	cout<<"Enter file name (with extension like file.txt) to encrypt : "<<endl;
 	gets(fname);
-	fps.open(fname,ios::out|ios::in);
+	fps.open(fname,ios::out|ios::in|ios::app);
+
 	if(!fps)
 	{
 		cout<<"Error in opening file..!!";
@@ -19,47 +31,85 @@ int main()
 		getch();
 		exit(1);
 	}
-			fpt.open("temp1.txt",ios::out|ios::in);
-	
+		
+	cout<<" File contain follwing data "<<endl;
 	while(!fps.eof())
 	{
-		fps>>t;
-		fpt<<t;
+		fps.getline(s,80);
+		puts(s);
 			}
-    
-	fps.close();
-	fpt.close();
-	fps.open(fname,ios::out|ios::trunc);
-	fps.close();
-		cout<<"File "<<fname<<" encrypted successfully..!!";
-		cout<<endl<<endl;
-		
-		fstream fp, ft;
-	cout<<"Enter file name (with extension like file.txt) which you have encrypted earlier to decrypt : ";
-	gets(fname);
-	fp.open(fname,ios::out|ios::in);
-	if(!fp)
+  
+    	fp.open(fname,ios::out|ios::in);
+    		fpt.open("x.txt",ios::out|ios::in|ios::app);
+   	while(!fp.eof())
 	{
-		cout<<"Error in opening source file..!!";
+		fp.getline(en,80);
+	  t=encryptDecrypt(en);
+       fpt<<t<<endl;	
+}      
+fps.close();
+	fpt.close();
+	fp.close();
+	 remove(fname);
+	rename("x.txt",fname);
+	fpp.open(fname,ios::out|ios::in);
+	cout<<endl<<"Data After Encruption "<<endl;
+	while(!fpp.eof())
+	{
+			fpp.getline(s,80);
+		puts(s);
+			}
+     
+   fpp.close();   
+   cout<<endl;
+   
+    cout<<endl;
+    
+    
+		fstream fi,fo,f,foo;
+	cout<<"Enter file name (with extension like file.txt) to dencrypt : "<<endl;
+	gets(fname);
+	fi.open(fname,ios::out|ios::in|ios::app);
+
+	if(!fi)
+	{
+		cout<<"Error in opening file..!!";
 		cout<<"\nPress any key to exit...";
 		getch();
-		exit(7);
+		exit(1);
 	}
-	ft.open("tempo.txt",ios::in|ios::out);
-  while(!ft.eof()) 
-  {
-  ft>>t;
-  fp<<t;
-}
-
-	cout<<"File "<<fname<<" decrypted successfully..!!";
-		while(!fp.eof())
+		
+	cout<<" File contain follwing data "<<endl;
+	while(!fi.eof())
 	{
-		fp>>ch;
-		cout<<ch;
-	}
-	fp.close();
-	ft.close();
-	return 0;
-}
+		fi.getline(s,80);
+		puts(s);
+			}
+  
+    	f.open(fname,ios::out|ios::in);
+    		fo.open("tem.txt",ios::out|ios::in|ios::app);
+   	while(!f.eof())
+	{
+		f.getline(en,80);
+	  t=encryptDecrypt(en);
+	  fo<<t<<endl;	
+}      
+fi.close();
+	f.close();
+	fo.close();
+	 remove(fname);
+	rename("tem.txt",fname);
+	foo.open(fname,ios::out|ios::in);
+	cout<<endl<<"Data After Decruption "<<endl;
+	while(!foo.eof())
+	{
+			foo.getline(s,80);
+		puts(s);
+			}
+     
+   foo.close();
+    
+ return 0;   
 
+getch();
+}
